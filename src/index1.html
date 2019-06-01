@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>练习webpack</title>
+    <style>
+        body{
+            height:100%;
+            width:100%;
+        }
+        .container{
+            position: absolute;
+            top:50%;
+            left:50%;
+            transform: translate(-50%,-50%);
+            height:600px;
+            width:500px;
+        }
+        .container h1{
+            color:red;
+            font-size:100px;
+            letter-spacing:20px; 
+            margin-top:-50px;
+            opacity: .4;
+        }
+        .todo-list{
+            border:1px hotpink solid;
+            border-radius: 5px;
+            width:400px;
+            box-shadow:0 5px 5px #ccc;
+            list-style:none;
+            padding:0;
+        }
+        .todo-list > li{
+            position: relative;
+            height:50px;
+            width:100%;
+        }
+        .todo-list > li:first-child{
+            display: flex;
+            border:0;
+        }
+        /* .todo-list > li:first-child::before{
+            content:"↓↓";
+            display: inline-block;
+            flex-grow: 1;
+        } */
+        .todo-list > li:first-child > input {
+            height:90%;
+            flex-grow: 9;
+            border:0;
+            font-size:1.5em;
+            outline: none;
+            box-sizing:border-box;
+        }
+        .todo-list > li {
+            display: none;
+            border:1px gray solid;
+        }
+        .todo-list > li > .delete{
+            position: absolute;
+            right:0px;
+        }
+        .todo-list > li > .delete::before{
+            content:"x"
+        }
+    </style>
+</head>
+<body>
+    <div class = "container">
+        <h1 class = "title">TODOS</h1>
+        <ul class="todo-list">
+            <li><input type="text" class="input-box" autofocus></li>    
+        </ul>
+    </div>
+</body>
+<script>
+    // 先维护一个数组
+    // let toDoList = [];
+    let ul = document.querySelector(".todo-list");
+
+    let searchList = function(target){
+        if(target == ""){
+            return;
+        }
+        let reger = new RegExp("("+target+")","gi");
+        console.log(reger);
+        [...ul.children].forEach((cur,index)=>{
+            let content = cur.firstChild;
+            if(index > 0 
+                && content.nodeType == 3 
+                && reger.test(content.nodeValue)){
+                    content.nodeValue = content.nodeValue.replace(reger,`<span style='color:red;'>$1</span>`);
+                    cur.style.display = "block";
+            } else if(index > 0){
+                    cur.style.display = "none";                
+            }
+        })
+    }
+
+    let inputArea = document.querySelector(".input-box");
+
+    inputArea.addEventListener("input",(e)=>{
+        searchList(e.target.value);
+    })
+
+    document.body.addEventListener("keydown",(e)=>{
+        // console.log(e.keyCode)
+        if(e.keyCode == 13){
+            let _this = e.target;
+            let currentVal = _this.value;
+            let del = document.createElement("span");
+            del.classList.add("delete");
+            let li = document.createElement("li");
+            li.classList.add("list");
+            li.innerHTML = currentVal;
+            li.appendChild(del);
+            _this.parentNode.parentNode.appendChild(li);
+            _this.value = "";
+        }
+    })
+
+    let del = document.getElementsByClassName("delete");
+
+    ul.addEventListener("click",(e)=>{
+        let _target = e.target;
+        if(_target.classList.contains("delete")){
+            ul.removeChild(_target.parentNode);
+        }
+    })
+
+    
+
+    
+
+
+</script>
+</html>
+
