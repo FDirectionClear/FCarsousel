@@ -57,7 +57,7 @@
   "dependencies": {
     "core-js": "^3.0.1",
     "install": "^0.12.2",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "npm": "^6.9.0",
     "vue": "^2.6.10",
     "webpack": "^4.30.0"
